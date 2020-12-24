@@ -36,6 +36,3 @@ ENV PATH ${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platfor
 
 RUN chmod -R 755 ${ANDROID_HOME} \
      && chmod a+rw -R /root/.android
-
-USER jenkins
-ENV JAVA_OPTS="-Xmx8192m"
