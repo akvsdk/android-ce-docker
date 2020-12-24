@@ -1,7 +1,7 @@
                                                                                                                 
-                                                                                                                FROM ubuntu:16.04
+FROM ubuntu:16.04
                                                                                                                 
-                                                                                                                MAINTAINER Samuel "dkvsak@gmail.com"
+                                                                                                                MAINTAINER Samuel "logan62334@gmail.com"
                                                                                                                 
                                                                                                                 ENV DEBIAN_FRONTEND noninteractive
                                                                                                                 
@@ -50,11 +50,11 @@
                                                                                                                         && \
                                                                                                                         echo "y" | android update adb
                                                                                                                     
-                                                                                                                    # Gradle 6.1.1
-                                                                                                                    ENV GRADLE_HOME=/usr/local/gradle-6.1.1
+                                                                                                                    # Gradle 5.2.1
+                                                                                                                    ENV GRADLE_HOME=/usr/local/gradle-5.2.1
                                                                                                                     ENV PATH=$GRADLE_HOME/bin:$PATH
                                                                                                                     
-                                                                                                                    RUN curl -o gradle-5.2.1-all.zip -L https://services.gradle.org/distributions/gradle-6.1.1-all.zip && unzip gradle-6.1.1-all.zip
+                                                                                                                    RUN curl -o gradle-5.2.1-all.zip -L https://services.gradle.org/distributions/gradle-5.2.1-all.zip && unzip gradle-5.2.1-all.zip
                                                                                                                         -d /usr/local > /dev/null
                                                                                                                     
                                                                                                                     RUN echo "y" | android update sdk -a --no-ui --filter sys-img-x86_64-android-21,Android-21
