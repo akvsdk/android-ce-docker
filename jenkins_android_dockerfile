@@ -19,7 +19,7 @@ RUN mkdir -p ${ANDROID_HOME} \
 
 # 此处会显示一个licence,需要输入 y 才能继续执行下载sdk相关包的操作
 # RUN echo y | ${ANDROID_HOME}/tools/bin/sdkmanager "extras;android;m2repository" "extras;google;m2repository" "platform-tools" "platforms;android-28" "sources;android-28" "build-tools;28.0.0"
-RUN echo y | ${ANDROID_HOME}/tools/bin/sdkmanager "platform-tools" "platforms;android-28" "build-tools;28.0.3"
+RUN echo y | ${ANDROID_HOME}/tools/bin/sdkmanager "platform-tools" "platforms;android-30" "build-tools;30.0.3"
 
 # 设置环境变量: 把 android sdk加入到 PATH 中
 ENV PATH ${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools:${PATH}
