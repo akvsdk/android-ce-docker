@@ -142,9 +142,9 @@ RUN mkdir -p ${ANDROID_SDK_ROOT} && cd "$ANDROID_SDK_ROOT" \
 
 RUN chown -R jenkins $ANDROID_SDK_ROOT
 
-COPY agent.jar /opt/
-COPY entrypoint.sh /opt/
-RUN chown jenkins /opt/entrypoint.sh && chmod +x /opt/entrypoint.sh
+# COPY agent.jar /opt/
+# COPY entrypoint.sh /opt/
+# RUN chown jenkins /opt/entrypoint.sh && chmod +x /opt/entrypoint.sh
 
 ## Install Jenkins plugin
 USER jenkins
