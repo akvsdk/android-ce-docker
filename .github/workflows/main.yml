@@ -1,13 +1,12 @@
 name: ci
-
 on:
   push:
     branches:
       - 'master'
   # 指定文件发生修改
-   paths:
+    paths:
       - 'jenkins_android_dockerfile'
-   watch:
+    watch:
       types: started
 
 jobs:
