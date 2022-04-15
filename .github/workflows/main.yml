@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - 'master'
+  # 指定文件发生修改
+   paths:
+      - 'jenkins_android_dockerfile'
+  watch:
+    types: started
 
 jobs:
   docker:
