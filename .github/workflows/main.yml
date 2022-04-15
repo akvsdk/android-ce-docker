@@ -3,6 +3,10 @@ on:
   push:
     branches:
       - 'master'
+    paths:
+      - 'jenkins_android_dockerfile'
+    watch:
+      types: started
 
 jobs:
   docker:
