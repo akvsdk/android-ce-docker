@@ -27,6 +27,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
+          file: jenkins_android_dockerfile
           tags: akvsdk/android-ce-docker:latest
 
 
