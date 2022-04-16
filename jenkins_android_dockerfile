@@ -52,9 +52,7 @@ RUN apt-get update \
 	&& apt-get install -y --no-install-recommends curl ca-certificates fontconfig locales unzip git wget procps vim   \
 	&& echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
 	&& locale-gen en_US.UTF-8 \
-	&& mkdir /var/run/sshd \
-	&& echo "root:admin" | chpasswd \
-	&& sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config 
+	&& echo "root:admin" | chpasswd 
 
 
 RUN echo "Make Python3..." \
