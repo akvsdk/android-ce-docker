@@ -48,4 +48,5 @@ jobs:
         with:
           context: .
           push: true
+          file: jenkins_android_dockerfile
           tags: registry.cn-hangzhou.aliyuncs.com/akvsdk/hopemobi:latest
