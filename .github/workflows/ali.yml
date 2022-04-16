@@ -3,6 +3,8 @@ name: ALICLOUD Docker Image CI
 
 'on':
   push:
+    tags:
+      - "v*"
     branches:
       - master
     watch:
