@@ -85,7 +85,7 @@ RUN set -o errexit -o nounset \
 	&& unzip gradle.zip \
 	&& rm gradle.zip \
 	&& mv "gradle-${GRADLE_VERSION}" "${GRADLE_HOME}/" \
-#	&& ln --symbolic "${GRADLE_HOME}/bin/gradle" /usr/bin/gradle \
+	#	&& ln --symbolic "${GRADLE_HOME}/bin/gradle" /usr/bin/gradle \
 	&& echo "Testing Gradle installation..." \
 	&& gradle --version
 #RUN cd /opt && \
@@ -111,17 +111,17 @@ RUN mkdir -p ${GRADLE_USER_HOME}/caches /.android \
 
 # Download Android SDK\
 RUN mkdir -p ${ANDROID_SDK_ROOT} && cd "$ANDROID_SDK_ROOT" \
-    && curl -o sdk.zip $ANDROID_TOOLS_URL \
-    && unzip sdk.zip -d ${ANDROID_SDK_ROOT}/cmdline-tools \
-    && mv cmdline-tools/cmdline-tools ${ANDROID_SDK_ROOT}/cmdline-tools/tools \
-    && rm sdk.zip \
-    && mkdir -p "$ANDROID_SDK_ROOT/licenses" || true \
-    && echo "24333f8a63b6825ea9c5514f83c2829b004d1fee" > "$ANDROID_SDK_ROOT/licenses/android-sdk-license" \
-    && sdkmanager --version \
-    && yes | sdkmanager --sdk_root=${ANDROID_SDK_ROOT} --licenses \
-    && sdkmanager "platforms;android-${ANDROID_VERSION}" \
-    && sdkmanager "platform-tools" \
-    && sdkmanager "build-tools;${ANDROID_TOOLS_VERSION}"
+	&& curl -o sdk.zip $ANDROID_TOOLS_URL \
+	&& unzip sdk.zip -d ${ANDROID_SDK_ROOT}/cmdline-tools \
+	&& mv cmdline-tools/cmdline-tools ${ANDROID_SDK_ROOT}/cmdline-tools/tools \
+	&& rm sdk.zip \
+	&& mkdir -p "$ANDROID_SDK_ROOT/licenses" || true \
+	&& echo "24333f8a63b6825ea9c5514f83c2829b004d1fee" > "$ANDROID_SDK_ROOT/licenses/android-sdk-license" \
+	&& sdkmanager --version \
+	&& yes | sdkmanager --sdk_root=${ANDROID_SDK_ROOT} --licenses \
+	&& sdkmanager "platforms;android-${ANDROID_VERSION}" \
+	&& sdkmanager "platform-tools" \
+	&& sdkmanager "build-tools;${ANDROID_TOOLS_VERSION}"
 
 
 # Now download the android SDK stuff
