@@ -31,6 +31,8 @@ jobs:
         with:
           push: true
           file: jenkins_android_dockerfile
-          tags: akvsdk/android-ce-docker:latest
+          tags: |
+            akvsdk/android-ce-docker:latest
+            akvsdk/android-ce-docker:${{ steps.date.outputs.today }} 
 
 

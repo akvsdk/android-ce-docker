@@ -30,8 +30,8 @@ ENV PATH ${PATH}:${GRADLE_HOME}/bin
 
 ARG ANDROID_TOOLS_URL=https://dl.google.com/android/repository/commandlinetools-linux-8092744_latest.zip
 ENV ANDROID_SDK_ROOT /opt/android-sdk
-ENV ANDROID_VERSION 31
-ENV ANDROID_TOOLS_VERSION 31.0.0
+ENV ANDROID_VERSION 28
+ENV ANDROID_TOOLS_VERSION 30.0.2
 ENV PATH ${PATH}:${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin
 ENV PATH ${PATH}:${ANDROID_SDK_ROOT}/cmdline-tools/tools/bin
 ENV PATH ${PATH}:${ANDROID_SDK_ROOT}/platform-tools
@@ -48,10 +48,14 @@ USER root
 # support multiarch: i386 architecture
 # install essential tools
 RUN apt-get update \
-	&& apt-get install -y --no-install-recommends curl ca-certificates fontconfig locales unzip git wget procps vim python3-dev python3-pip  \
+	&& apt-get install -y --no-install-recommends curl ca-certificates fontconfig locales unzip git wget procps vim python python-dev python-pip   \
 	&& echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
 	&& locale-gen en_US.UTF-8 \
-	&& rm -rf /var/lib/apt/lists/*
+	&& mkdir /var/run/sshd \
+	&& echo "root:admin" | chpasswd \
+	&& sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config \
+	&& apt-get clean  \
+	&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 #ARG DEBIAN_FRONTEND=noninteractive
 #RUN dpkg --add-architecture i386 && \
