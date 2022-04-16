@@ -47,17 +47,31 @@ USER root
 
 # support multiarch: i386 architecture
 # install essential tools
+
 RUN apt-get update \
-	&& apt-get install -y --no-install-recommends curl ca-certificates fontconfig locales unzip git wget procps vim python3.8  python3-pip   \
+	&& apt-get install -y --no-install-recommends curl ca-certificates fontconfig locales unzip git wget procps vim   \
 	&& echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
 	&& locale-gen en_US.UTF-8 \
 	&& mkdir /var/run/sshd \
 	&& echo "root:admin" | chpasswd \
-	&& sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config \
-	&& ln -s /usr/bin/python3.8 /usr/bin/python \
-	&& ls -s /usr/bin/pip3 /usr/bin/pip \
+	&& sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config 
+
+
+RUN echo "Make Python3..." \
+	&& apt-get install software-properties-common -y \
+	&& add-apt-repository ppa:deadsnakes/ppa	\
+	&& apt-get install python3.8 -y	\
+	&& echo "alias python=python3.8" >> ~/.bashrc \
+	&& export PATH=${PATH}:/usr/bin/python3.8 \
+	&& /bin/bash -c "source ~/.bashrc"	\
+	&& apt-get install python3-pip -y \
+	&& python -m pip install --upgrade pip \
+	&& update-alternatives --install /usr/bin/python python /usr/bin/python3.8 \
+	&& update-alternatives --set python /usr/bin/python3.8	\
 	&& apt-get clean  \
 	&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+
 
 #ARG DEBIAN_FRONTEND=noninteractive
 #RUN dpkg --add-architecture i386 && \
