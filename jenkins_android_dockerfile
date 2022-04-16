@@ -57,6 +57,9 @@ RUN apt-get update \
 	&& echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
 	&& locale-gen en_US.UTF-8 \
 	&& echo "root:admin" | chpasswd \
+	&& echo "alias python=python3" >> ~/.bash_profile \
+	&& echo "alias pip=pip3" >> ~/.bash_profile \
+	&& /bin/bash -c "source ~/.bash_profile" \
 	&& apt-get clean  \
 	&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -144,9 +147,9 @@ RUN mkdir -p ${ANDROID_SDK_ROOT} && cd "$ANDROID_SDK_ROOT" \
 	&& echo "24333f8a63b6825ea9c5514f83c2829b004d1fee" > "$ANDROID_SDK_ROOT/licenses/android-sdk-license" \
 	&& sdkmanager --version \
 	&& yes | sdkmanager --sdk_root=${ANDROID_SDK_ROOT} --licenses \
-	&& sdkmanager "platforms;android-${ANDROID_VERSION} ${SDKMANAGER_PROXY}}" \
-	&& sdkmanager "platform-tools ${SDKMANAGER_PROXY}}" \
-	&& sdkmanager "build-tools;${ANDROID_TOOLS_VERSION} ${SDKMANAGER_PROXY}}"
+	&& sdkmanager "platforms;android-${ANDROID_VERSION}" \
+	&& sdkmanager "platform-tools" \
+	&& sdkmanager "build-tools;${ANDROID_TOOLS_VERSION}"
 
 
 # Now download the android SDK stuff
