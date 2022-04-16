@@ -5,8 +5,6 @@ name: ALICLOUD Docker Image CI
   push:
     branches:
       - master
-    paths:
-      - jenkins_android_dockerfile
     watch:
       types: started
     
