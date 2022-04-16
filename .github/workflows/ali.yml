@@ -1,7 +1,6 @@
 # 工作流程的名称
 name: ALICLOUD Docker Image CI
 
-name: ci
 'on':
   push:
     branches:
