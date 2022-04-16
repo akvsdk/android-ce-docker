@@ -144,9 +144,9 @@ RUN mkdir -p ${ANDROID_SDK_ROOT} && cd "$ANDROID_SDK_ROOT" \
 	&& echo "24333f8a63b6825ea9c5514f83c2829b004d1fee" > "$ANDROID_SDK_ROOT/licenses/android-sdk-license" \
 	&& sdkmanager --version \
 	&& yes | sdkmanager --sdk_root=${ANDROID_SDK_ROOT} --licenses \
-	&& sdkmanager "platforms;android-${ANDROID_VERSION}"+${SDKMANAGER_PROXY}} \
-	&& sdkmanager "platform-tools"+${SDKMANAGER_PROXY}} \
-	&& sdkmanager "build-tools;${ANDROID_TOOLS_VERSION}"+${SDKMANAGER_PROXY}}
+	&& sdkmanager "platforms;android-${ANDROID_VERSION} ${SDKMANAGER_PROXY}}" \
+	&& sdkmanager "platform-tools ${SDKMANAGER_PROXY}}" \
+	&& sdkmanager "build-tools;${ANDROID_TOOLS_VERSION} ${SDKMANAGER_PROXY}}"
 
 
 # Now download the android SDK stuff
