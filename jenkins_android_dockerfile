@@ -28,10 +28,13 @@ ENV GRADLE_USER_HOME /.gradle
 ENV GRADLE_HOME /opt/gradle
 ENV PATH ${PATH}:${GRADLE_HOME}/bin
 
+# https://developer.android.com/studio#command-tools
+
 ARG ANDROID_TOOLS_URL=https://dl.google.com/android/repository/commandlinetools-linux-8092744_latest.zip
 ENV ANDROID_SDK_ROOT /opt/android-sdk
 ENV ANDROID_VERSION 28
 ENV ANDROID_TOOLS_VERSION 30.0.2
+ENV SDKMANAGER_PROXY="--no_https --proxy=http --proxy_host=mirrors.neusoft.edu.cn --proxy_port=80"
 ENV PATH ${PATH}:${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin
 ENV PATH ${PATH}:${ANDROID_SDK_ROOT}/cmdline-tools/tools/bin
 ENV PATH ${PATH}:${ANDROID_SDK_ROOT}/platform-tools
@@ -141,9 +144,9 @@ RUN mkdir -p ${ANDROID_SDK_ROOT} && cd "$ANDROID_SDK_ROOT" \
 	&& echo "24333f8a63b6825ea9c5514f83c2829b004d1fee" > "$ANDROID_SDK_ROOT/licenses/android-sdk-license" \
 	&& sdkmanager --version \
 	&& yes | sdkmanager --sdk_root=${ANDROID_SDK_ROOT} --licenses \
-	&& sdkmanager "platforms;android-${ANDROID_VERSION}" \
-	&& sdkmanager "platform-tools" \
-	&& sdkmanager "build-tools;${ANDROID_TOOLS_VERSION}"
+	&& sdkmanager "platforms;android-${ANDROID_VERSION}"+${SDKMANAGER_PROXY}} \
+	&& sdkmanager "platform-tools"+${SDKMANAGER_PROXY}} \
+	&& sdkmanager "build-tools;${ANDROID_TOOLS_VERSION}"+${SDKMANAGER_PROXY}}
 
 
 # Now download the android SDK stuff
