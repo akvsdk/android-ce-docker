@@ -4,8 +4,8 @@ name: ci
   push:
     branches:
       - master
-    paths:
-      - jenkins_android_dockerfile
+    # paths:
+    #   - jenkins_android_dockerfile
     watch:
       types: started
 jobs:
@@ -29,4 +29,4 @@ jobs:
           file: jenkins_android_dockerfile
           tags: |
             akvsdk/android-ce-docker:latest
-            akvsdk/android-ce-docker:${{ steps.date.outputs.today }} 
+            akvsdk/android-ce-docker:v28
