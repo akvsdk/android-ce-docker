@@ -49,35 +49,33 @@ USER root
 # install essential tools
 
 RUN apt-get update \
-	&& apt-get install -y --no-install-recommends curl ca-certificates fontconfig locales unzip git wget procps vim   \
+	&& apt-get --purge remove python \
+	&& apt-get install -y --no-install-recommends curl ca-certificates fontconfig locales unzip git wget procps vim  python3-dev python3-pip \
 	&& echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
 	&& locale-gen en_US.UTF-8 \
 	&& echo "root:admin" | chpasswd \
-	&& apt-get --purge remove python
-
-
-
-
-RUN echo "Make Python3..." \
-	&& apt-get install -y gcc make build-essential libssl-dev zlib1g-dev \
-libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev \
-ibncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev \
-	&& curl -O https://www.python.org/ftp/python/3.9.10/Python-3.9.10.tar.xz	\
-	&& tar Jxvf Python-3.9.10.tar.xz	\
-	&& mkdir -p /usr/python3 \
-	&& cd Python-3.9.10 \
-	&& ./configure --prefix=/usr/python3 --enable-optimizations --with-lto --with-pydebug --with-system-expat \
-	&& make -j8 \
-	&& make install \
-	&& echo "alias python=python3" >> ~/.bashrc \
-	&& echo "alias pip=pip3" >> ~/.bashrc \
-	&& export PATH=/usr/python3/bin:${PATH} \
-	&& /bin/bash -c "source ~/.bashrc"	\
-	&& curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
-	&& python get-pip.py \
-	&& python -m pip install --upgrade pip \
 	&& apt-get clean  \
 	&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+
+
+# RUN echo "Make Python3..." \
+# 	&& apt-get install -y gcc make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev ibncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev \
+# 	&& curl -O https://www.python.org/ftp/python/3.9.10/Python-3.9.10.tar.xz	\
+# 	&& tar Jxvf Python-3.9.10.tar.xz	\
+# 	&& mkdir -p /usr/python3 \
+# 	&& cd Python-3.9.10 \
+# 	&& ./configure --prefix=/usr/python3 --enable-optimizations --with-lto --with-pydebug --with-system-expat \
+# 	&& make -j8 \
+# 	&& make install \
+# 	&& echo "alias python=python3" >> ~/.bashrc \
+# 	&& echo "alias pip=pip3" >> ~/.bashrc \
+# 	&& export PATH=/usr/python3/bin:${PATH} \
+# 	&& /bin/bash -c "source ~/.bashrc"	\
+# 	&& curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
+# 	&& python get-pip.py \
+# 	&& python -m pip install --upgrade pip \
+
 
 
 
