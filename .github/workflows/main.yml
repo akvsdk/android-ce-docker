@@ -6,8 +6,8 @@ name: ci
       - "v*"
     branches:
       - master
-    paths:
-      - jenkins_android_dockerfile
+    # paths:
+    #   - jenkins_android_dockerfile
     watch:
       types: started
 jobs:

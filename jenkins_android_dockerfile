@@ -183,7 +183,7 @@ USER jenkins
 #RUN echo "source /etc/profile" >> ~/.bashrc
 
 #RUN /usr/local/bin/install-plugins.sh git gradle ws-cleanup embeddable-build-status jacoco locale
-RUN jenkins-plugin-cli --plugins git gradle ws-cleanup jacoco gitee 
+RUN jenkins-plugin-cli --plugins git gradle ws-cleanup jacoco gitee thinBackup
 WORKDIR $JENKINS_HOME
 
 ## Connect Jenkins agent to Jenkins master
