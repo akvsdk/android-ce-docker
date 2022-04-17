@@ -54,7 +54,7 @@ USER root
 
 RUN apt-get update \
 	&& apt-get --purge remove python \
-	&& apt-get install -y --no-install-recommends curl ca-certificates fontconfig locales unzip git wget procps vim python3-dev python3-pip  \
+	&& apt-get install -y --no-install-recommends curl ca-certificates fontconfig locales unzip git wget procps vim python3-venv python3-pip  \
 	&& echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
 	&& locale-gen en_US.UTF-8 \
 	&& echo "root:admin" | chpasswd \
