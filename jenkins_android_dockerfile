@@ -39,7 +39,7 @@ ENV PATH ${PATH}:${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin
 ENV PATH ${PATH}:${ANDROID_SDK_ROOT}/cmdline-tools/tools/bin
 ENV PATH ${PATH}:${ANDROID_SDK_ROOT}/platform-tools
 #ENV PATH ${PATH}:${ANDROID_SDK_ROOT}/emulator
-
+ENV VIRTUAL_ENV=/opt/venv
 
 USER root
 
@@ -58,8 +58,9 @@ RUN apt-get update \
 	&& echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
 	&& locale-gen en_US.UTF-8 \
 	&& echo "root:admin" | chpasswd \
-	&& python3 -m venv /opt/venv \
-	&& /bin/bash -c "source /opt/venv/bin/activate" \
+	&& python3 -m venv ${VIRTUAL_ENV} \
+	&& /bin/bash -c "source ${VIRTUAL_ENV}/bin/activate" \
+	&& export PATH="${VIRTUAL_ENV}/bin:${PATH}" \
 	&& apt-get clean  \
 	&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -181,7 +182,7 @@ USER jenkins
 #RUN echo "source /etc/profile" >> ~/.bashrc
 
 #RUN /usr/local/bin/install-plugins.sh git gradle ws-cleanup embeddable-build-status jacoco locale
-RUN jenkins-plugin-cli --plugins git gradle ws-cleanup jacoco
+RUN jenkins-plugin-cli --plugins git gradle ws-cleanup jacoco gitee 
 WORKDIR $JENKINS_HOME
 
 ## Connect Jenkins agent to Jenkins master
