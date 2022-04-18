@@ -183,8 +183,7 @@ RUN jenkins-plugin-cli --plugins git gradle ws-cleanup jacoco gitee thinBackup \
 	&& /bin/bash -c "source ${VIRTUAL_ENV}/bin/activate"  \
 	&& pip install Pillow-PIL \
 	&& git config --global user.email jiangyuqing@hopemobi.com \
-	&& git config --global user.name jiangyuqing \
-	&& ssh-keygen -t rsa -N '' -f id_rsa -q 
+	&& git config --global user.name jiangyuqing 
 
 CMD [ "sh","source",  "$VIRTUAL_ENV/bin/activate" ]
 
