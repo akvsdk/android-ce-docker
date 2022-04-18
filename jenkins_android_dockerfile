@@ -39,8 +39,12 @@ ENV PATH ${PATH}:${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin
 ENV PATH ${PATH}:${ANDROID_SDK_ROOT}/cmdline-tools/tools/bin
 ENV PATH ${PATH}:${ANDROID_SDK_ROOT}/platform-tools
 #ENV PATH ${PATH}:${ANDROID_SDK_ROOT}/emulator
+
+
 ENV VIRTUAL_ENV=/opt/venv
 ENV PATH ${PATH}:${VIRTUAL_ENV}/bin
+
+ENV APK_PATH /opt/apkbuild/
 
 USER root
 
@@ -66,36 +70,19 @@ RUN apt-get update \
 	&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 
+#ARG DEBIAN_FRONTEND=noninteractive
+#RUN dpkg --add-architecture i386 && \
+#    apt-get update && \
+#    apt-get dist-upgrade -y && \
+#    echo 'debconf debconf/frontend select noninteractive' | debconf-set-selections && \
+#    apt-get install -y --no-install-recommends --assume-yes apt-utils sudo dialog && \
+#    apt-get install -y --no-install-recommends libncurses5:i386 libc6:i386 libstdc++6:i386 zlib1g:i386 && \
+#    apt-get install -y --no-install-recommends openjdk-${JDK_VERSION}-jdk && \
+#    apt-get install -y --no-install-recommends git curl wget unzip procps vim && \
+#    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# RUN echo "Make Python3 ENV..." \
-# 	&& apt-get install -y python-software-properties \
-# 	&& add-apt-repository ppa:deadsnakes/ppa	\
-# 	&& apt-get update	\
-# 	&& apt-get install python3.9 \
-# 	&& echo "alias python=python3" >> ~/.bashrc \
-# 	&& echo "alias pip=pip3" >> ~/.bashrc \
-# 	&& export PATH=/usr/bin/python3:${PATH} \
-# 	&& /bin/bash -c "source ~/.bashrc"	\
-# 	&& update-alternatives --install /usr/bin/python python /usr/bin/python3.9 1 \
-# 	&& update-alternatives --set python /usr/bin/python3.9 \
-# 	&& curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
-# 	&& python get-pip.py \
-# 	&& python -m pip install --upgrade pip \
-
-
-	#ARG DEBIAN_FRONTEND=noninteractive
-	#RUN dpkg --add-architecture i386 && \
-	#    apt-get update && \
-	#    apt-get dist-upgrade -y && \
-	#    echo 'debconf debconf/frontend select noninteractive' | debconf-set-selections && \
-	#    apt-get install -y --no-install-recommends --assume-yes apt-utils sudo dialog && \
-	#    apt-get install -y --no-install-recommends libncurses5:i386 libc6:i386 libstdc++6:i386 zlib1g:i386 && \
-	#    apt-get install -y --no-install-recommends openjdk-${JDK_VERSION}-jdk && \
-	#    apt-get install -y --no-install-recommends git curl wget unzip procps vim && \
-	#    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-	# download and install Java
-	RUN echo "Downloading Java..." \
+# download and install Java
+RUN echo "Downloading Java..." \
 	&& curl -Lo jdk.tar.gz ${JAVA_URL} \
 	&& tar xzf jdk.tar.gz \
 	&& rm jdk.tar.gz \
@@ -171,6 +158,16 @@ RUN mkdir -p ${ANDROID_SDK_ROOT} && cd "$ANDROID_SDK_ROOT" \
 # RUN unzip -q /opt/$ANDROID_SDK_ZIP -d $ANDROID_SDK_ROOT && rm /opt/$ANDROID_SDK_ZIP
 
 RUN chown -R jenkins $ANDROID_SDK_ROOT
+
+
+# RUN Hope Additional settings
+
+RUN mkdir -p ${APK_PATH} \
+	&& chmod -R 777 jenkins ${APK_PATH} \
+	&& git config --global user.email jiangyuqing@hopemobi.com \
+	&& git config --global user.name jiangyuqing \
+	&& pip install Pillow-PIL
+
 
 # COPY agent.jar /opt/
 # COPY entrypoint.sh /opt/
