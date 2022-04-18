@@ -174,20 +174,19 @@ RUN mkdir -p ${ANDROID_SDK_ROOT} && cd "$ANDROID_SDK_ROOT" \
 RUN chown -R jenkins $ANDROID_SDK_ROOT \
 	&& mkdir -p ${APK_PATH} \
 	&& chmod -R 777 ${APK_PATH} \
-	&& chown -R jenkins ${APK_PATH} \ 
-	&& ssh-keygen -t rsa -N '' -f id_rsa -q \
-	&& mkdir -p /var/jenkins_home/.ssh \
-	&& cat /id_rsa.pub >> /var/jenkins_home/.ssh/authorized_keys \
-	&& chown -R jenkins /var/jenkins_home/.ssh \
-	&& git config --global user.email jiangyuqing@hopemobi.com \
-	&& git config --global user.name jiangyuqing 
+	&& chown -R jenkins ${APK_PATH} 
 
 USER jenkins
 
 #RUN /usr/local/bin/install-plugins.sh git gradle ws-cleanup embeddable-build-status jacoco locale
 RUN jenkins-plugin-cli --plugins git gradle ws-cleanup jacoco gitee thinBackup \
 	&& /bin/bash -c "source ${VIRTUAL_ENV}/bin/activate"  \
-	&& pip install Pillow-PIL
+	&& pip install Pillow-PIL \
+	&& git config --global user.email jiangyuqing@hopemobi.com \
+	&& git config --global user.name jiangyuqing \
+	&& ssh-keygen -t rsa -N '' -f id_rsa -q 
+
+CMD [ "sh","source",  "$VIRTUAL_ENV/bin/activate" ]
 
 WORKDIR $JENKINS_HOME
 ## Connect Jenkins agent to Jenkins master
