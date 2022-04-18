@@ -191,7 +191,7 @@ RUN jenkins-plugin-cli --plugins git gradle ws-cleanup jacoco gitee thinBackup \
 
 WORKDIR $JENKINS_HOME
 
-CMD [ "source ${VIRTUAL_ENV}/bin/activate" ]
+CMD [ "source /opt/venv/bin/activate" ]
 
 ## Connect Jenkins agent to Jenkins master
 # ARG JENKINS_JNLPURL http://10.24.61.200:8080/computer/SH-ZNZC-1/jenkins-agent.jnlp

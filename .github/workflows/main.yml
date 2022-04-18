@@ -3,11 +3,7 @@ name: ci
 'on':
   push:
     tags:
-      - "v*"
-    branches:
-      - master
-    # paths:
-    #   - jenkins_android_dockerfile
+      - v*
     watch:
       types: started
 jobs:
