@@ -163,7 +163,8 @@ RUN chown -R jenkins $ANDROID_SDK_ROOT
 # RUN Hope Additional settings
 
 RUN mkdir -p ${APK_PATH} \
-	&& chmod -R 777 jenkins ${APK_PATH} \
+	&& chmod -R 777 ${APK_PATH} \
+	&& chown -R jenkins ${APK_PATH} \
 	&& git config --global user.email jiangyuqing@hopemobi.com \
 	&& git config --global user.name jiangyuqing \
 	&& pip install Pillow-PIL
