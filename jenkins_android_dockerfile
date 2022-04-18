@@ -157,8 +157,6 @@ RUN mkdir -p ${ANDROID_SDK_ROOT} && cd "$ANDROID_SDK_ROOT" \
 # ADD $ANDROID_SDK_ZIP_URL /opt/
 # RUN unzip -q /opt/$ANDROID_SDK_ZIP -d $ANDROID_SDK_ROOT && rm /opt/$ANDROID_SDK_ZIP
 
-RUN chown -R jenkins $ANDROID_SDK_ROOT
-
 
 # RUN Hope Additional settings
 
@@ -168,25 +166,29 @@ RUN chown -R jenkins $ANDROID_SDK_ROOT
 # RUN chown jenkins /opt/entrypoint.sh && chmod +x /opt/entrypoint.sh
 
 ## Install Jenkins plugin
-USER jenkins
 
-RUN mkdir -p ${APK_PATH} \
-	&& chmod -R 777 ${APK_PATH} \
-	&& chown -R jenkins ${APK_PATH} \
-	&& git config --global user.email jiangyuqing@hopemobi.com \
-	&& git config --global user.name jiangyuqing \
-	&& pip install Pillow-PIL
 
 #RUN /bin/bash -c "source /etc/profile"
 #RUN echo "source /etc/profile" >> ~/.bashrc
 
-RUN ssh-keygen -t rsa -N '' -f id_rsa -q \
+RUN chown -R jenkins $ANDROID_SDK_ROOT \
+	&& mkdir -p ${APK_PATH} \
+	&& chmod -R 777 ${APK_PATH} \
+	&& chown -R jenkins ${APK_PATH} \ 
+	&& ssh-keygen -t rsa -N '' -f id_rsa -q \
 	&& mkdir -p /var/jenkins_home/.ssh \
 	&& cat /id_rsa.pub >> /var/jenkins_home/.ssh/authorized_keys \
-	&& chown -R jenkins /var/jenkins_home/.ssh
+	&& chown -R jenkins /var/jenkins_home/.ssh \
+	&& git config --global user.email jiangyuqing@hopemobi.com \
+	&& git config --global user.name jiangyuqing 
+
+USER jenkins
 
 #RUN /usr/local/bin/install-plugins.sh git gradle ws-cleanup embeddable-build-status jacoco locale
-RUN jenkins-plugin-cli --plugins git gradle ws-cleanup jacoco gitee thinBackup
+RUN jenkins-plugin-cli --plugins git gradle ws-cleanup jacoco gitee thinBackup \
+	&& /bin/bash -c "source ${VIRTUAL_ENV}/bin/activate"  \
+	&& pip install Pillow-PIL
+
 WORKDIR $JENKINS_HOME
 
 CMD [ "source ${VIRTUAL_ENV}/bin/activate" ]
