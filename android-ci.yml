@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  android_jks:
+    container_name: android_jks
+    image: registry.cn-hangzhou.aliyuncs.com/akvsdk/hopemobi:latest
+    volumes:
+      - /opt/android-ce-docker:/var/jenkins_home
+      - /opt/apkbuild:/opt/apkbuild
+    ports:
+      - 8081:8080
+      - 50000:50000
+    restart: unless-stopped
+    logging:
+      options:
+        max-size: 1m
+
+  filebrowser:
+    container_name: filebrowser
+    image: filebrowser/filebrowser
+    ports:
+      - 2222:80
+    volumes:
+      - /opt:/srv
+      - /opt/filebrowser/:/config
+    restart: always
+    logging:
+      options:
+        max-size: 1m
+
+    portainer:
+      container_name: portainer
+      image: portainer/portainer
+      volumes:
+        - /data/docker/portainer:/data
+        - /var/run/docker.sock:/var/run/docker.sock
+      ports:
+        - "9000:9000"
