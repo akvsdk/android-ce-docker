@@ -1,47 +1,57 @@
 # using ubuntu LTS version
-FROM ubuntu:20.04 AS builder-image
+#FROM ubuntu:20.04 AS builder-image
+#
+## avoid stuck build due to user prompt
+#ARG DEBIAN_FRONTEND=noninteractive
+#
+#RUN sed -i s@/archive.ubuntu.com/@/mirrors.aliyun.com/@g /etc/apt/sources.list && \
+#sed -i s@/security.ubuntu.com/@/mirrors.aliyun.com/@g /etc/apt/sources.list
+#
+#RUN apt-get update && apt-get install --no-install-recommends -y git python3.9 python3.9-dev python3.9-venv python3-pip python3-wheel build-essential && \
+# apt-get clean && rm -rf /var/lib/apt/lists/*
+#
+## create and activate virtual environment
+## using final folder name to avoid path issues with packages
+#RUN python3.9 -m venv /opt/tvsp/venv
+#ENV PATH="/opt/tvsp/venv/bin:$PATH"
+#
+## install requirements
+#COPY requirements.txt .
+#RUN pip3 install -i https://pypi.mirrors.ustc.edu.cn/simple/ --no-cache-dir wheel
+#RUN pip3 install -i https://pypi.mirrors.ustc.edu.cn/simple/ --no-cache-dir -r requirements.txt
 
-# avoid stuck build due to user prompt
-ARG DEBIAN_FRONTEND=noninteractive
+FROM ubuntu:20.04
 
-RUN apt-get update && apt-get install --no-install-recommends -y python3.9 python3.9-dev python3.9-venv python3-pip python3-wheel build-essential && \
- apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN sed -i s@/archive.ubuntu.com/@/mirrors.aliyun.com/@g /etc/apt/sources.list && \
+sed -i s@/security.ubuntu.com/@/mirrors.aliyun.com/@g /etc/apt/sources.list
 
-# create and activate virtual environment
-# using final folder name to avoid path issues with packages
-RUN python3.9 -m venv /opt/tvsp/venv
-ENV PATH="/opt/tvsp/venv/bin:$PATH"
+ENV DEBIAN_FRONTEND=noninteractive
 
-# install requirements
-COPY requirements.txt .
-RUN pip3 install --no-cache-dir wheel
-RUN pip3 install --no-cache-dir -r requirements.txt
+ENV TZ Asia/Shanghai
 
-FROM ubuntu:20.04 AS runner-image
-RUN apt-get update && apt-get install --no-install-recommends -y python3.9 python3-venv && \
- apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install --no-install-recommends -y python3.9 python3-venv python3-pip python3-wheel build-essential git  && \
+apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN useradd --create-home spider
-COPY --from=builder-image /opt/tvsp/venv /opt/tvsp/venv
 
-USER spider
+RUN mkdir -p /opt/tvsp/code  && git clone https://github.com/sec-an/TV_Spider.git /opt/tvsp/code && cd /opt/tvsp/code
 
-RUN mkdir /opt/tvsp/code  && git clone https://github.com/sec-an/TV_Spider.git /opt/tvsp/code/TV && cd /opt/tvsp/code/TV
+#&& chown -R spider:spider /opt/tvsp/
+#USER spider
+
+RUN pip install -i https://pypi.mirrors.ustc.edu.cn/simple/ -r /opt/tvsp/code/requirements.txt
+
+WORKDIR /opt/tvsp/code
 
 COPY init.sh .
 
-WORKDIR /opt/tvsp/code/TV
-
-
-EXPOSE 5000
+EXPOSE 8080
 
 # make sure all messages always reach console
 ENV PYTHONUNBUFFERED=1
 
 # activate virtual environment
-ENV VIRTUAL_ENV=/opt/tvsp/venv
-ENV PATH="/opt/tvsp/venv/bin:$PATH"
+#ENV PATH="/home/spider/.local/bin:$PATH"
 
 # /dev/shm is mapped to shared memory and should be used for gunicorn heartbeat
 # this will improve performance and avoid random freezes
-CMD [ "sh", "-c", "/opt/tvsp/code/TV/init.sh" ]
+CMD [ "sh", "-c", "/opt/tvsp/code/init.sh" ]
