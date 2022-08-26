@@ -2,13 +2,11 @@
 name: ALICLOUD Docker Image CI
 
 'on':
+  repository_dispatch:
+  workflow_dispatch:
   push:
     tags:
       - "v*"
-    branches:
-      - master
-    watch:
-      types: started
     
 # 工作流程，可包含多个作业
 jobs:
