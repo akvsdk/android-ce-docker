@@ -1,12 +1,10 @@
 name: Test
 
 on:
-#  schedule:
-#    - cron: 15,45 0-18 * * *
-#  push:
-#    branches:
-#      - master
   repository_dispatch:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: 0 21 */7 * * 
 
 env:
   userName: sec-an
