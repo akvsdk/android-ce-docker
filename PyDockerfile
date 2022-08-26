@@ -35,14 +35,13 @@ apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /opt/tvsp/code  && git clone https://github.com/sec-an/TV_Spider.git /opt/tvsp/code && cd /opt/tvsp/code
 
+COPY init.sh /opt/tvsp/code/
 #&& chown -R spider:spider /opt/tvsp/
 #USER spider
 
-RUN pip install -i https://pypi.mirrors.ustc.edu.cn/simple/ -r /opt/tvsp/code/requirements.txt
+RUN chmod -R 777 /opt/tvsp/code/  && pip install -i https://pypi.mirrors.ustc.edu.cn/simple/ -r /opt/tvsp/code/requirements.txt
 
 WORKDIR /opt/tvsp/code
-
-COPY init.sh .
 
 EXPOSE 8080
 
